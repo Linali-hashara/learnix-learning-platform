@@ -1,100 +1,140 @@
-# Cadex Learning Platform - React Frontend
+# 🎓 Learnix Learning Platform
 
-A modern, responsive React frontend for a learning platform that connects learners with top universities and industry leaders.
+A full-stack learning platform with React frontend and Express backend that connects learners with top universities and industry leaders.
 
 ## 📋 Features
 
-- **Responsive Design**: Mobile-first design that works on all devices
-- **Modern Components**: Reusable React components for each section
-- **Beautiful UI**: Clean, professional interface matching the Cadex design
-- **Interactive Elements**: Carousels, hover effects, and smooth transitions
-- **Accessibility**: Semantic HTML and accessible components
+- **Responsive Design**: Mobile-first React frontend
+- **Modern Architecture**: Full-stack monorepo structure
+- **RESTful API**: Express.js backend for data operations
+- **Beautiful UI**: Clean, professional interface
+- **Interactive Elements**: Carousels, hover effects, smooth transitions
 
-## 🚀 Project Structure
+## 🏗️ Project Structure
 
 ```
-src/
-├── App.jsx                 # Main application component
-├── App.css                 # Global styles
-├── index.js               # React entry point
-├── components/
-│   ├── Header.jsx         # Navigation header
-│   ├── Hero.jsx           # Hero section with CTA
-│   ├── LearningPaths.jsx  # Learning paths cards
-│   ├── IndustryLeaders.jsx# Partner companies section
-│   ├── Testimonials.jsx   # Learner testimonials
-│   ├── Universities.jsx   # Partner universities carousel
-│   └── Footer.jsx         # Footer
-└── public/
-    └── index.html         # HTML template
+learnix-learning-platform/
+├── frontend/                      # React application
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Header.jsx         # Navigation header
+│   │   │   ├── Hero.jsx           # Hero section with CTA
+│   │   │   ├── LearningPaths.jsx  # Learning paths
+│   │   │   ├── IndustryLeaders.jsx# Partners
+│   │   │   ├── Testimonials.jsx   # Reviews
+│   │   │   ├── Universities.jsx   # University carousel
+│   │   │   └── Footer.jsx         # Footer
+│   │   ├── App.jsx                # Main component
+│   │   ├── App.css                # Global styles
+│   │   └── index.js               # Entry point
+│   ├── public/
+│   │   └── index.html
+│   └── package.json
+│
+├── backend/                       # Express.js API
+│   ├── src/
+│   │   └── server.js              # Main server file
+│   ├── controllers/               # Business logic
+│   ├── models/                    # Database models
+│   ├── routes/                    # API routes
+│   └── package.json
+│
+└── package.json                   # Root monorepo manager
 ```
 
-## 🛠️ Installation & Setup
+## 🚀 Getting Started
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### 1. Install All Dependencies
 
-2. **Start development server:**
-   ```bash
-   npm start
-   ```
+```bash
+npm run install:all
+```
 
-3. **Build for production:**
-   ```bash
-   npm build
-   ```
+### 2. Run Both Frontend & Backend
 
-## 📦 Dependencies
+```bash
+npm start
+```
 
-- **React 18.2.0**: UI library
-- **React DOM 18.2.0**: React renderer
-- **Lucide React**: Icon library
-- **React Scripts**: Build tools
+This will automatically start:
+- **Frontend**: http://localhost:3000 (React dev server)
+- **Backend**: http://localhost:5000 (Express API)
 
-## 🎨 Styling
+### 3. Access the Application
 
-The project uses vanilla CSS for styling with:
-- CSS Grid and Flexbox for layouts
-- CSS variables for theming
-- Media queries for responsive design
-- Smooth transitions and hover effects
+Open your browser and visit: **http://localhost:3000**
 
-## 📱 Responsive Breakpoints
+## 🎯 Available Commands
 
-- Desktop: 1200px+
-- Tablet: 768px - 1199px
-- Mobile: 480px - 767px
-- Small Mobile: < 480px
+### Root Level (Monorepo)
+```bash
+npm start              # Run both frontend and backend
+npm run start:frontend # Run React only
+npm run start:backend  # Run Express only
+npm run build          # Build React for production
+npm test               # Run React tests
+npm run install:all    # Install all dependencies
+```
 
-## 🔧 Customization
+### Frontend Only
+```bash
+cd frontend
+npm start              # Start dev server
+npm run build          # Build for production
+npm test               # Run tests
+```
 
-### Colors
-Update color values in `App.css`:
-- Primary Blue: `#2563eb`
-- Dark Gray: `#1f2937`
-- Light Gray: `#f9fafb`
+### Backend Only
+```bash
+cd backend
+npm run dev            # Start with nodemon
+npm start              # Start server
+```
 
-### Typography
-- Font Family: System fonts (auto-loads best available)
-- Heading Sizes: 36px (h2), 24px (h3), 16px (h4)
-- Base Font Size: 16px
+## 📦 Tech Stack
 
-### Components
-Each component in `src/components/` is self-contained and can be:
-- Modified independently
-- Reused elsewhere
-- Extended with additional functionality
+### Frontend
+- **React 18.2.0** - UI library
+- **React DOM 18.2.0** - React renderer
+- **Lucide React** - Icon library
+- **React Scripts** - Build tools
 
-## 📶 Performance Optimization
+### Backend
+- **Express 4.18.2** - Web framework
+- **CORS** - Cross-origin requests
+- **Mongoose 7.0.0** - MongoDB ODM
+- **Dotenv** - Environment variables
+- **Nodemon** - Development auto-reload
 
-- Lightweight component-based architecture
-- CSS-based animations (GPU accelerated)
-- Optimal image and asset loading
-- Lazy loading ready
+## 🎨 Frontend Features
 
-## 🌐 Browser Support
+- Responsive CSS Grid/Flexbox layouts
+- Vanilla CSS with no dependencies
+- Mobile-first design approach
+- Smooth animations and transitions
+- Accessible semantic HTML
+
+## 🔌 Backend Features
+
+- RESTful API endpoints
+- CORS enabled for frontend communication
+- Environment configuration support
+- MongoDB integration ready
+- Error handling middleware
+
+## ⚙️ Configuration
+
+### Environment Variables (Backend)
+
+Create `.env` file in `backend/` directory:
+
+```
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+NODE_ENV=development
+```
+
+## 📱 Browser Support
 
 - Chrome (latest)
 - Firefox (latest)
@@ -103,11 +143,7 @@ Each component in `src/components/` is self-contained and can be:
 
 ## 📄 License
 
-This project is open source and available for educational purposes.
-
-## 🤝 Contributing
-
-Feel free to fork, modify, and improve this project! 
+Open source - Available for educational purposes
 
 ---
 
