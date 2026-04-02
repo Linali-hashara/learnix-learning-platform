@@ -1,24 +1,19 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import LearningPaths from './components/LearningPaths';
-import IndustryLeaders from './components/IndustryLeaders';
-import Testimonials from './components/Testimonials';
-import Universities from './components/Universities';
-import Footer from './components/Footer';
+import Home from './pages/Home';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Hero />
-      <LearningPaths />
-      <IndustryLeaders />
-      <Testimonials />
-      <Universities />
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+      </Routes>
+    </Router>
   );
 }
 
