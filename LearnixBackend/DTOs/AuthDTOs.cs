@@ -58,6 +58,8 @@ namespace LearnixBackend.DTOs
         public string Role { get; set; } = null!;
 
         public List<string>? Skills { get; set; } // Optional list of selected skills
+
+        public string? EducationLevel { get; set; } // Optional education level
     }
 
     public class SaveUserPreferencesResponse
@@ -66,6 +68,7 @@ namespace LearnixBackend.DTOs
         public string Purpose { get; set; } = null!;
         public string Role { get; set; } = null!;
         public string? Skills { get; set; }
+        public string? EducationLevel { get; set; }
         public bool Success { get; set; }
         public string Message { get; set; } = null!;
     }

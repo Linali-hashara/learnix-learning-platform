@@ -173,6 +173,13 @@ namespace LearnixBackend.Services
                     _logger.LogInformation($"Skills saved: {user.Skills}");
                 }
 
+                // Save education level if provided
+                if (!string.IsNullOrWhiteSpace(request.EducationLevel))
+                {
+                    user.EducationLevel = request.EducationLevel.Trim();
+                    _logger.LogInformation($"Education level saved: {user.EducationLevel}");
+                }
+
                 user.UpdatedAt = DateTime.UtcNow;
 
                 _context.Users.Update(user);
@@ -186,6 +193,7 @@ namespace LearnixBackend.Services
                     Purpose = user.Purpose,
                     Role = user.Role,
                     Skills = user.Skills,
+                    EducationLevel = user.EducationLevel,
                     Success = true,
                     Message = "Preferences saved successfully"
                 };

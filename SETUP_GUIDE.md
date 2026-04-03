@@ -7,9 +7,8 @@ Learnix is a learning platform with a React frontend and .NET backend.
 ### Architecture
 ```
 learnix-learning-platform/
-├── frontend/               # React app (runs on port 3000/5173)
-├── LearnixBackend/        # ASP.NET Core API (runs on port 5102)
-└── backend/               # (Legacy Node.js - not used)
+├── frontend/               # React app (runs on port 3000)
+└── LearnixBackend/        # ASP.NET Core API (runs on port 5102)
 ```
 
 ## Quick Start

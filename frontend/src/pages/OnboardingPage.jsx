@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
@@ -10,14 +10,16 @@ export default function OnboardingPage() {
   const studentName = location.state?.fullName || 'Student';
   const userId = location.state?.userId;
 
-  const [step, setStep] = useState('welcome'); // 'welcome' | 'step1_purpose' | 'step2_role' | 'step3_skills' | 'complete'
+  const [step, setStep] = useState('welcome'); // 'welcome' | 'step1_purpose' | 'step2_role' | 'step3_skills' | 'step4_education' | 'welcome_page' | 'complete'
   const [selectedReason, setSelectedReason] = useState(''); // Single selection for purpose
   const [selectedRole, setSelectedRole] = useState(''); // Single selection for role
   const [selectedSkills, setSelectedSkills] = useState([]); // Multiple selection for skills (max 5)
+  const [selectedEducation, setSelectedEducation] = useState(''); // Single selection for education level
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [countdown, setCountdown] = useState(30); // Countdown timer for welcome page
 
   const reasons = [
     { id: 'start_career', label: 'Start my career' },
@@ -39,6 +41,33 @@ export default function OnboardingPage() {
     { id: 'analytics', label: 'Analytics', icon: '📊' },
     { id: 'network', label: 'Network', icon: '🌐' }
   ];
+
+  const educationLevels = [
+    { id: 'school_student', label: 'School Student', icon: '🎓' },
+    { id: 'diploma', label: 'Diploma', icon: '📜' },
+    { id: 'bsc', label: 'BSc', icon: '🎓' },
+    { id: 'msc', label: 'MSc', icon: '📚' },
+    { id: 'phd', label: 'PhD', icon: '🎓' }
+  ];
+
+  // Countdown timer for welcome page
+  useEffect(() => {
+    if (step === 'welcome_page') {
+      const timer = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            // Navigate to home page (main learning dashboard) after countdown
+            navigate('/');
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [step, navigate]);
 
   const handleReasonToggle = (id) => {
     setSelectedReason(id); // Single selection for purpose
@@ -63,6 +92,10 @@ export default function OnboardingPage() {
     });
   };
 
+  const handleEducationToggle = (id) => {
+    setSelectedEducation(id); // Single selection for education level
+  };
+
   const handleStartClick = () => {
     setStep('step1_purpose');
   };
@@ -74,6 +107,8 @@ export default function OnboardingPage() {
       setStep('step1_purpose');
     } else if (step === 'step3_skills') {
       setStep('step2_role');
+    } else if (step === 'step4_education') {
+      setStep('step3_skills');
     }
   };
 
@@ -115,6 +150,17 @@ export default function OnboardingPage() {
       return;
     }
 
+    // Move to step 4 (education level selection)
+    setStep('step4_education');
+  };
+
+  const handleEducationNext = async () => {
+    if (!selectedEducation) {
+      setAlertMessage('Please select your education level');
+      setShowAlert(true);
+      return;
+    }
+
     if (!userId) {
       setError('User ID not found. Please sign up again.');
       return;
@@ -133,6 +179,7 @@ export default function OnboardingPage() {
           purpose: selectedReason,
           role: selectedRole,
           skills: selectedSkills,
+          educationLevel: selectedEducation,
         }),
       });
 
@@ -140,11 +187,8 @@ export default function OnboardingPage() {
 
       if (data.success) {
         console.log('User preferences saved:', data);
-        setStep('complete');
-        // Navigate to dashboard after a brief delay
-        setTimeout(() => {
-          navigate('/dashboard', { state: { userId, selectedReason, selectedRole, selectedSkills } });
-        }, 500);
+        setCountdown(30); // Reset countdown to 30 seconds
+        setStep('welcome_page');
       } else {
         setError(data.message || 'Failed to save preferences');
       }
@@ -368,6 +412,120 @@ export default function OnboardingPage() {
                 </button>
               </div>
             </>
+          )}
+
+          {/* STEP 4: Education Level Selection Screen */}
+          {step === 'step4_education' && (
+            <>
+              {/* Step Indicator */}
+              <div className="onboarding-step">
+                <h2 className="step-label">Step 4</h2>
+              </div>
+
+              {/* Questions Section */}
+              <div className="onboarding-questions">
+                <div className="question-group">
+                  <p className="question-text">Your Latest Education Level!!</p>
+                  <p className="question-subtext">What is your current education level?</p>
+                </div>
+
+                {/* Radio Button Options */}
+                <div className="education-list">
+                  {educationLevels.map(education => (
+                    <label key={education.id} className="education-item">
+                      <input
+                        type="radio"
+                        name="education"
+                        value={education.id}
+                        checked={selectedEducation === education.id}
+                        onChange={() => handleEducationToggle(education.id)}
+                        className="education-radio"
+                      />
+                      <span className="education-icon">{education.icon}</span>
+                      <span className="education-label">{education.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Back and Finish Buttons */}
+              <div className="onboarding-footer-dual">
+                <button
+                  className="onboarding-back-text-btn"
+                  onClick={handleBackStep}
+                  disabled={isLoading}
+                >
+                  <ArrowLeft size={20} />
+                  <span>Back</span>
+                </button>
+                <button
+                  className="onboarding-next-btn"
+                  onClick={handleEducationNext}
+                  disabled={isLoading}
+                >
+                  <span>{isLoading ? 'Saving...' : 'Finish'}</span>
+                  {!isLoading && <ArrowRight size={20} />}
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* WELCOME PAGE: After completion */}
+          {step === 'welcome_page' && (
+            <div className="welcome-page-content">
+              <div className="welcome-animated-container">
+                {/* Welcome Header */}
+                <div className="welcome-header">
+                  <h1 className="welcome-main-title">Welcome {studentName}!</h1>
+                  <p className="welcome-subtitle">You're all set up!</p>
+                </div>
+
+                {/* Illustration */}
+                <div className="welcome-illustration">
+                  <div className="illustration-student">👨‍🎓</div>
+                  <div className="illustration-books">📚</div>
+                  <div className="illustration-lightbulb">💡</div>
+                  <div className="illustration-clipboard">📋</div>
+                  <div className="illustration-apple">🍎</div>
+                  <div className="illustration-plane">✈️</div>
+                </div>
+
+                {/* Setup Status */}
+                <p className="setup-status">Setting up your account ...</p>
+
+                {/* Checklist */}
+                <div className="setup-checklist">
+                  <div className="checklist-item checklist-show">
+                    <span className="checklist-check">✓</span>
+                    <span className="checklist-text">Creating your profile...</span>
+                  </div>
+                  <div className="checklist-item checklist-show" style={{ animationDelay: '0.3s' }}>
+                    <span className="checklist-check">✓</span>
+                    <span className="checklist-text">Enrolling you in classes...</span>
+                  </div>
+                  <div className="checklist-item checklist-show" style={{ animationDelay: '0.6s' }}>
+                    <span className="checklist-check">✓</span>
+                    <span className="checklist-text">Getting everything ready .... </span>
+                  </div>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="progress-bar-container">
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ width: `${(countdown / 30) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Final Message */}
+                <div className="welcome-final-message">
+                  <h2 className="final-title">All Set! Let's Begin Your Journey!</h2>
+                  <p className="redirecting-text">Redirecting to your dashboard...</p>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
