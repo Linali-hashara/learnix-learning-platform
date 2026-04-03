@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft, Mail, Lock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import Header from '../components/Header';
 import '../styles/LoginPage.css';
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,10 +23,35 @@ export default function LoginPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login submitted:', formData);
-    // TODO: Add authentication logic here
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5102/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log('Login successful:', data);
+        // Navigate to dashboard with user info
+        navigate('/dashboard', { state: { userId: data.userId, fullName: data.fullName } });
+      } else {
+        setError(data.message || 'Login failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Failed to connect to server. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -32,16 +61,7 @@ export default function LoginPage() {
   return (
     <div className="login-page">
       {/* Header */}
-      <header className="login-header">
-        <Link to="/" className="login-back-btn">
-          <ArrowLeft size={24} />
-          <span>Back</span>
-        </Link>
-        <Link to="/" className="login-logo">
-          Learnix
-        </Link>
-        <div className="login-header-spacer"></div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <div className="login-container">
@@ -86,14 +106,16 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {error && <div className="error-message">{error}</div>}
+
             <div className="form-options">
               <a href="#" className="forgot-password">
                 Forgot password?
               </a>
             </div>
 
-            <button type="submit" className="login-submit-btn">
-              Continue
+            <button type="submit" className="login-submit-btn" disabled={isLoading}>
+              {isLoading ? 'Logging in...' : 'Continue'}
             </button>
           </form>
 
