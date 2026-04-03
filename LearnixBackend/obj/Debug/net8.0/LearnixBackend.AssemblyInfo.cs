@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LearnixBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+395521a1ed52b389fd904ef0577e2c995a9a130d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6ae4d10bfe3b4d1680b079ae2acf98171a30569")]
 [assembly: System.Reflection.AssemblyProductAttribute("LearnixBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LearnixBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
