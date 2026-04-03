@@ -39,6 +39,8 @@ builder.Services.AddLogging();
 
 var app = builder.Build();
 
+await EnsureDatabaseSchemaAsync(app.Services);
+
 // Log environment info
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 logger.LogInformation($"Environment: {app.Environment.EnvironmentName}");
@@ -68,3 +70,26 @@ app.MapGet("/api/health", () =>
     .WithOpenApi();
 
 app.Run();
+
+static async Task EnsureDatabaseSchemaAsync(IServiceProvider services)
+{
+    using var scope = services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<LearnixContext>();
+
+    await context.Database.EnsureCreatedAsync();
+
+    var schemaUpdates = new[]
+    {
+        "IF COL_LENGTH('dbo.Users', 'Purpose') IS NULL ALTER TABLE dbo.Users ADD Purpose NVARCHAR(MAX) NULL;",
+        "IF COL_LENGTH('dbo.Users', 'Role') IS NULL ALTER TABLE dbo.Users ADD Role NVARCHAR(MAX) NULL;",
+        "IF COL_LENGTH('dbo.Users', 'Skills') IS NULL ALTER TABLE dbo.Users ADD Skills NVARCHAR(MAX) NULL;",
+        "IF COL_LENGTH('dbo.Users', 'EducationLevel') IS NULL ALTER TABLE dbo.Users ADD EducationLevel NVARCHAR(MAX) NULL;",
+        "IF COL_LENGTH('dbo.Users', 'CreatedAt') IS NULL ALTER TABLE dbo.Users ADD CreatedAt DATETIME2 NOT NULL CONSTRAINT DF_Users_CreatedAt DEFAULT (SYSUTCDATETIME());",
+        "IF COL_LENGTH('dbo.Users', 'UpdatedAt') IS NULL ALTER TABLE dbo.Users ADD UpdatedAt DATETIME2 NOT NULL CONSTRAINT DF_Users_UpdatedAt DEFAULT (SYSUTCDATETIME());"
+    };
+
+    foreach (var sql in schemaUpdates)
+    {
+        await context.Database.ExecuteSqlRawAsync(sql);
+    }
+}
