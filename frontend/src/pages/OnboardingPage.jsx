@@ -57,8 +57,16 @@ export default function OnboardingPage() {
         setCountdown(prev => {
           if (prev <= 1) {
             clearInterval(timer);
-            // Navigate to home page (main learning dashboard) after countdown
-            navigate('/');
+            // Navigate to dashboard with user preferences after countdown
+            navigate('/dashboard', {
+              state: {
+                fullName: studentName,
+                selectedReason: selectedReason,
+                selectedRole: selectedRole,
+                selectedSkills: selectedSkills,
+                selectedEducation: selectedEducation
+              }
+            });
             return 0;
           }
           return prev - 1;
@@ -67,7 +75,7 @@ export default function OnboardingPage() {
 
       return () => clearInterval(timer);
     }
-  }, [step, navigate]);
+  }, [step, navigate, studentName, selectedReason, selectedRole, selectedSkills, selectedEducation]);
 
   const handleReasonToggle = (id) => {
     setSelectedReason(id); // Single selection for purpose
