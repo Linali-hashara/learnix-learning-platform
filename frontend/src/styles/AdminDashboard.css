@@ -64,12 +64,50 @@
   display: flex;
   align-items: center;
   gap: 14px;
+  position: relative;
 }
 
 .topbar-actions a {
   color: var(--admin-text-soft);
   text-decoration: none;
   font-weight: 500;
+}
+
+.topbar-profile-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 140px;
+  background: #fff;
+  border: 1px solid #ddd9ef;
+  border-radius: 10px;
+  box-shadow: 0 12px 24px rgba(28, 19, 60, 0.14);
+  padding: 6px;
+  z-index: 100;
+  animation: reveal-up 0.18s ease;
+}
+
+.topbar-menu-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #2f2f3f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.topbar-menu-item:hover {
+  background: #f4f1ff;
+  color: var(--admin-primary);
+}
+
+.topbar-menu-item.danger:hover {
+  background: #fff1f1;
+  color: #b62d2d;
 }
 
 .profile-btn {

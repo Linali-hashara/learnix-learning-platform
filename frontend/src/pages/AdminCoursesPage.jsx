@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, ChevronDown, User } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
+import AdminTopbar from '../components/AdminTopbar';
 import '../styles/AdminDashboard.css';
 
 export default function AdminCoursesPage() {
@@ -134,24 +135,7 @@ export default function AdminCoursesPage() {
 
   return (
     <div className="admin-dashboard-page">
-      <header className="admin-topbar">
-        <div className="topbar-brand">
-          <span className="brand-learnix">learnix</span>
-          <span className="brand-admin">admin</span>
-        </div>
-
-        <div className="topbar-search">
-          <Search size={16} />
-          <input type="text" placeholder="Search admin tools" />
-        </div>
-
-        <div className="topbar-actions">
-          <Link to="/">Home</Link>
-          <button type="button" className="profile-btn" aria-label="Admin profile">
-            <User size={16} />
-          </button>
-        </div>
-      </header>
+      <AdminTopbar locationState={location.state} />
 
       <div className="admin-layout">
         <aside className="admin-sidebar">

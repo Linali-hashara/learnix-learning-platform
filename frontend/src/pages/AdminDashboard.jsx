@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, ChevronDown, User, Users, BarChart3, BookOpenCheck } from 'lucide-react';
+import { ChevronDown, Users, BarChart3, BookOpenCheck } from 'lucide-react';
+import AdminTopbar from '../components/AdminTopbar';
 import '../styles/AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -52,24 +53,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-dashboard-page">
-      <header className="admin-topbar">
-        <div className="topbar-brand">
-          <span className="brand-learnix">learnix</span>
-          <span className="brand-admin">admin</span>
-        </div>
-
-        <div className="topbar-search">
-          <Search size={16} />
-          <input type="text" placeholder="Search admin tools" />
-        </div>
-
-        <div className="topbar-actions">
-          <a href="/">Home</a>
-          <button type="button" className="profile-btn" aria-label="Admin profile">
-            <User size={16} />
-          </button>
-        </div>
-      </header>
+      <AdminTopbar locationState={location.state} />
 
       <div className="admin-layout">
         <aside className="admin-sidebar">
