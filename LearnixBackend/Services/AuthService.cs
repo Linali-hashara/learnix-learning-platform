@@ -81,7 +81,8 @@ namespace LearnixBackend.Services
                 {
                     FullName = request.FullName.Trim(),
                     Email = request.Email.Trim().ToLower(),
-                    PasswordHash = passwordHash
+                    PasswordHash = passwordHash,
+                    IsAdmin = false
                 };
 
                 _context.Users.Add(user);
@@ -267,6 +268,7 @@ namespace LearnixBackend.Services
                     UserId = user.Id,
                     FullName = user.FullName,
                     Email = user.Email,
+                    IsAdmin = user.IsAdmin,
                     Success = true,
                     Message = "Login successful"
                 };

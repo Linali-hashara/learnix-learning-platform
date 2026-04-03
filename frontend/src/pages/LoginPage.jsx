@@ -41,8 +41,12 @@ export default function LoginPage() {
 
       if (data.success) {
         console.log('Login successful:', data);
-        // Navigate to dashboard with user info
-        navigate('/dashboard', { state: { userId: data.userId, fullName: data.fullName } });
+        if (data.isAdmin) {
+          navigate('/admin/dashboard', { state: { userId: data.userId, fullName: data.fullName } });
+        } else {
+          // Navigate to dashboard with user info
+          navigate('/dashboard', { state: { userId: data.userId, fullName: data.fullName } });
+        }
       } else {
         setError(data.message || 'Login failed. Please try again.');
       }

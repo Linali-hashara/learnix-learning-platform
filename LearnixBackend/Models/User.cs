@@ -6,6 +6,7 @@ namespace LearnixBackend.Models
         public string FullName { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string PasswordHash { get; set; } = null!;
+        public bool IsAdmin { get; set; } = false;
         public string? Purpose { get; set; } // Why they chose Learnix
         public string? Role { get; set; } // Interested role (Writer, BA, SE, CIO)
         public string? Skills { get; set; } // JSON array of selected skills (stored as comma-separated for simplicity)
